@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, WhoMade, Complexity
+from .models import Product, WhoMade, Complexity,Cart
 
 
 admin.site.register(Complexity)

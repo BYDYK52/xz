@@ -24,3 +24,15 @@ class WhoMade(models.Model):
 
     def str(self):
         return self.title
+
+
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE,null=True)
+    quantity = models.IntegerField(default=0)
+    created_timestamp = models.DateTimeField(auto_now_add=True)
+
+    def str(self):
+        return self.title
