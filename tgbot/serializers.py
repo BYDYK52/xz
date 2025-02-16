@@ -9,7 +9,26 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('__all__')
 
-class CartSerializer(serializers.ModelSerializer):
+class ProductsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cart
-        fields = '__all__'
+        model = Products
+        fields = ("__all__")
+
+
+class BasketProductsSerializer(serializers.HyperlinkedModelSerializer):
+    products = ProductsSerializer(many=True)
+    class Meta:
+        model = BasketProducts
+        fields = ('basket','products')
+
+class BasketSerializer(serializers.HyperlinkedModelSerializer):
+    basket_products = BsketProductsSerializer(many=True)
+    class Meta:
+        model = Basket
+        fields = ('user' , 'basket_products ')
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    basket = BasketSerializer(many=True)
+    class Meta:
+        model = User
+        fields = ('id', 'basket')

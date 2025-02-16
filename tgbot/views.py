@@ -53,15 +53,3 @@ class AddToCartApi(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        user_id = request.user.id
-        data = serializer.validated_data
-
-        Cart.objects.create(
-            user_id=user_id,
-            product_id=data['product_id'],
-            quantity=data['quantity'],
-        )
-        return Response({ 'message': 'Added to cart'})

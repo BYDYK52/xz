@@ -28,11 +28,9 @@ class WhoMade(models.Model):
 
 
 
-class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    product = models.ForeignKey('Product', on_delete=models.CASCADE,null=True)
-    quantity = models.IntegerField(default=0)
-    created_timestamp = models.DateTimeField(auto_now_add=True)
+class Basket(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='basket')
 
-    def str(self):
-        return self.title
+class BasketProducts(models.Model):
+    basket= models.ForeignKey('Basket', on_delete=models.CASCADE, related_name='basket_products')
+    product = models.ManyToManyField('Product', on_delete=models.CASCADE, related_name="basket_products")
