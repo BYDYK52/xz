@@ -6,7 +6,7 @@ from tgbot.views import *
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'carts', CartViewSet)
+router.register(r'carts', BasketViewSet)
 
 
 urlpatterns = [
@@ -18,6 +18,7 @@ urlpatterns = [
     path('api/v1/auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.authtoken')),
     path('api/', include(router.urls)),
+    path('api/v1/basket/', BasketViewSet.as_view({'get': 'list', 'post': 'create'})),
     #path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     #path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     #path('api/v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),

@@ -2,12 +2,14 @@ import django_filters
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-import Response
-from .models import Product, Cart
-from .serializers import ProductSerializer, CartSerializer
+from rest_framework.response import Response
+from .models import Product, BasketProduct
+from .serializers import ProductSerializer, BasketSerializer,BasketProductsSerializer,AddToCartSerializer
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .filter import ProductFilter
 from rest_framework import viewsets
+from rest_framework.views import APIView
+
 
 class ProductAPIList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
@@ -28,17 +30,23 @@ class ProductAPIDestroy(generics.RetrieveDestroyAPIView):
 
 # carts/views.py
 
-class CartViewSet(viewsets.ModelViewSet):
-    queryset = Cart.objects.all()
-    serializer_class = CartSerializer
+class BasketViewSet(viewsets.ModelViewSet):
+    queryset = BasketProduct.objects.all()
+    serializer_class = BasketSerializer
 
     def create(self, request, *args, **kwargs):
-        # Create a new cart item
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        user = request.user
+        product = Product.objects.get(id=serializer.validated_data['product_id'])
+        cart, created = Cart.objects.get_or_create(user=user)
+        cart_product, created = CartProduct.objects.get_or_create(cart=cart, product=product)
+        if not created:
+            cart_product.quantity += serializer.validated_data['quantity']
+        else:
+            cart_product.quantity = serializer.validated_data['quantity']
+        cart_product.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         # Update the quantity of an existing cart item
@@ -46,6 +54,7 @@ class CartViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
+
 
 
 class AddToCartApi(APIView):

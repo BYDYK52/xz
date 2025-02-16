@@ -27,15 +27,14 @@ class WhoMade(models.Model):
 
 
 
-
-class Basket(models.Model):
+class BasketProduct(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='basket')
-
-class BasketProducts(models.Model):
-    basket= models.ForeignKey('Basket', on_delete=models.CASCADE, related_name='basket_products')
-    product = models.ManyToManyField('Product', on_delete=models.CASCADE, related_name="basket_products")
+    product = models.ManyToManyField('Product', related_name="basket_products")
     quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"{self.product.title} ({self.quantity})"
+
+        return f"{self.product} ({self.quantity})"
+
+
 
