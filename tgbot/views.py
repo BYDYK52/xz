@@ -2,7 +2,7 @@ import django_filters
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-
+import Response
 from .models import Product, Cart
 from .serializers import ProductSerializer, CartSerializer
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
@@ -53,3 +53,6 @@ class AddToCartApi(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
