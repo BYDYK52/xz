@@ -45,10 +45,10 @@ class AddToCartSerializer(serializers.Serializer):
     def create(self, validated_data):
         user = self.context['request'].user
         product = Product.objects.get(id=validated_data['product_id'])
-        cart, created = Cart.objects.get_or_create(user=user)
-        cart_product, created = CartProduct.objects.get_or_create(cart=cart, product=product)
-        cart_product.quantity += validated_data['quantity']
-        cart_product.save()
-        return cart_product
+        basket , created = BasketProduct.objects.get_or_create(user=user)
+        basket_product, created = BasketProduct.objects.get_or_create(cart=basket, product=product)
+        basket_product.quantity += validated_data['quantity']
+        basket_product.save()
+        return basket_product
 
 

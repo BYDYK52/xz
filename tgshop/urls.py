@@ -5,6 +5,8 @@ from django.urls import path, include, re_path
 from tgbot.views import *
 from rest_framework import routers
 
+from xz.tgbot.views import BasketViewSet, ProductUpdate, ProductAPIDestroy, ProductAPIList
+
 router = routers.DefaultRouter()
 router.register(r'carts', BasketViewSet)
 
