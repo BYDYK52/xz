@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Product, BasketProduct,  User
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class ProductSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -45,7 +47,7 @@ class AddToCartSerializer(serializers.Serializer):
     def create(self, validated_data):
         user = self.context['request'].user
         product = Product.objects.get(id=validated_data['product_id'])
-        basket , created = BasketProduct.objects.get_or_create(user=user)
+        basket, created = BasketProduct.objects.get_or_create(user=user)
         basket_product, created = BasketProduct.objects.get_or_create(cart=basket, product=product)
         basket_product.quantity += validated_data['quantity']
         basket_product.save()
