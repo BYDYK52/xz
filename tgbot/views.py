@@ -1,5 +1,5 @@
 import django_filters
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
@@ -9,13 +9,15 @@ from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .filter import ProductFilter
 from rest_framework import viewsets
 from rest_framework.views import APIView
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 class ProductAPIList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend,filters.SearchFilter]
+    search_fields = ['title', 'content', 'complexity']
     filterset_class = ProductFilter
 class ProductUpdate(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
@@ -39,8 +41,8 @@ class BasketViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         user = request.user
         product = Product.objects.get(id=serializer.validated_data['product_id'])
-        cart, created = Cart.objects.get_or_create(user=user)
-        cart_product, created = CartProduct.objects.get_or_create(cart=cart, product=product)
+        cart, created = BasketProduct.objects.get_or_create(user=user)
+        cart_product, created = BasketProduct.objects.get_or_create(cart=cart, product=product)
         if not created:
             cart_product.quantity += serializer.validated_data['quantity']
         else:

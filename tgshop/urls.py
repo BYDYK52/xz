@@ -5,7 +5,7 @@ from django.urls import path, include, re_path
 from tgbot.views import *
 from rest_framework import routers
 
-from xz.tgbot.views import BasketViewSet, ProductUpdate, ProductAPIDestroy, ProductAPIList
+from tgbot.views import BasketViewSet, ProductUpdate, ProductAPIDestroy, ProductAPIList
 
 router = routers.DefaultRouter()
 router.register(r'carts', BasketViewSet)
@@ -15,7 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/drf-auth/',include('rest_framework.urls')),
     path('api/v1/product/', ProductAPIList.as_view()),
-    path('api/v1/product/<int:pk>', ProductUpdate.as_view()),
+    path('api/v1/product_detail/<int:pk>', ProductUpdate.as_view()),
     path('api/v1/productdelete/<int:pk>', ProductAPIDestroy.as_view()),
     path('api/v1/auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.authtoken')),
