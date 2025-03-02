@@ -16,10 +16,10 @@ class BasketProductsSerializer(serializers.ModelSerializer):
         fields = ('user','product')
 
 class BasketSerializer(serializers.ModelSerializer):
-    basket_product = BasketProductsSerializer(many=True)
+    # basket_product = BasketProductsSerializer(many=True)
     class Meta:
         model = BasketProduct
-        fields = ('user', 'basket_product','quantity','product')
+        fields = ('user','quantity','product')
 
 class UserSerializer(serializers.ModelSerializer):
     basket = BasketSerializer(many=True)

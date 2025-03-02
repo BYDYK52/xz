@@ -17,7 +17,7 @@ class ProductAPIList(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend,filters.SearchFilter]
-    search_fields = ['title', 'content', 'complexity']
+    search_fields = ['title', 'content', ]
     filterset_class = ProductFilter
 class ProductUpdate(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
@@ -40,7 +40,7 @@ class BasketViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = request.user
-        product = Product.objects.get(id=serializer.validated_data['product_id'])
+        product = Product.objects.get(id=serializer.validated_data['product'])
         cart, created = BasketProduct.objects.get_or_create(user=user)
         cart_product, created = BasketProduct.objects.get_or_create(cart=cart, product=product)
         if not created:
