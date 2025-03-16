@@ -1,0 +1,26 @@
+
+body{
+    background: rgb(52, 56, 61);
+}
+
+
+header{
+display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: transparent;
+    color: #fff;
+}
+h1{
+ color: rgb(255, 255, 255);
+ margin: 20px auto 0;
+ width: 200px;
+ text-align: center;
+}
+
+img{
+margin-top: 15px;
+margin-left: 15px;
+height: 80px;
+width: 100px;
+}
