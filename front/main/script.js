@@ -36,3 +36,18 @@ else{
 }
 // пример как сделать всплывающие окно с вопросом полем для ввода ответа
 // и проверкой введенного ответа
+
+
+// let i = 0 можно и так но в начале (; надо так и т.д.)
+//for (let i = 0; i < 10; i++) {
+//   alert(i)
+//}
+
+
+function showMessage(text, num){
+    for (let i = 0; i < num; i++) {
+        console.log(`${text} ${name}`)
+    }
+}
+
+showMessage('hello', 10)
