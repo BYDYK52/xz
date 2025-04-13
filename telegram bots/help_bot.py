@@ -13,36 +13,38 @@ CREATOR_ID = 5435014446
 
 bot = telebot.TeleBot(TOKEN)
 
-conn = sqlite3.connect('sessions.db', check_same_thread=False)
-cursor = conn.cursor()
+def get_db_connection():
+    return sqlite3.connect('sessions.db')
 
-# Ensure column exists for backward compatibility
-cursor.execute("PRAGMA table_info(sessions)")
-columns = [col[1] for col in cursor.fetchall()]
-if 'assigned_admin' not in columns:
-    cursor.execute('ALTER TABLE sessions ADD COLUMN assigned_admin INTEGER')
-    conn.commit()
+def init_db():
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS sessions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                question TEXT NOT NULL,
+                status TEXT NOT NULL,
+                assigned_admin INTEGER
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS stats (
+                admin_id INTEGER PRIMARY KEY,
+                resolved INTEGER DEFAULT 0,
+                deferred INTEGER DEFAULT 0,
+                last_activity TEXT DEFAULT NULL
+            )
+        ''')
+        conn.commit()
 
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS sessions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
-        question TEXT NOT NULL,
-        status TEXT NOT NULL,
-        assigned_admin INTEGER
-    )
-''')
-conn.commit()
+        cursor.execute("PRAGMA table_info(sessions)")
+        columns = [col[1] for col in cursor.fetchall()]
+        if 'assigned_admin' not in columns:
+            cursor.execute('ALTER TABLE sessions ADD COLUMN assigned_admin INTEGER')
+            conn.commit()
 
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS stats (
-        admin_id INTEGER PRIMARY KEY,
-        resolved INTEGER DEFAULT 0,
-        deferred INTEGER DEFAULT 0,
-        last_activity TEXT DEFAULT NULL
-    )
-''')
-conn.commit()
+init_db()
 
 def log_action(action):
     with open(LOG_FILE, 'a', encoding='utf-8') as f:
@@ -62,179 +64,135 @@ def save_admin_ids(admins):
 ADMIN_IDS = load_admin_ids()
 
 def create_session(user_id, question, status='pending'):
-    cursor.execute(
-        'INSERT INTO sessions (user_id, question, status, assigned_admin) VALUES (?, ?, ?, ?)',
-        (user_id, question, status, None)
-    )
-    conn.commit()
-    return cursor.lastrowid
-
-def get_session(qid):
-    cursor.execute('SELECT id, user_id, question, status, assigned_admin FROM sessions WHERE id=?', (qid,))
-    row = cursor.fetchone()
-    if row:
-        return {'id': row[0], 'user_id': row[1], 'question': row[2], 'status': row[3], 'assigned_admin': row[4]}
-    return None
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            'INSERT INTO sessions (user_id, question, status, assigned_admin) VALUES (?, ?, ?, ?)',
+            (user_id, question, status, None)
+        )
+        conn.commit()
+        return cursor.lastrowid
 
 def get_sessions_by_status(status):
-    cursor.execute('SELECT id, user_id, question, status, assigned_admin FROM sessions WHERE status=?', (status,))
-    rows = cursor.fetchall()
-    return [{'id': row[0], 'user_id': row[1], 'question': row[2], 'status': row[3], 'assigned_admin': row[4]} for row in rows]
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT id, user_id, question, status, assigned_admin FROM sessions WHERE status=?', (status,))
+        return cursor.fetchall()
 
 def update_session_status(qid, new_status, admin_id=None):
-    cursor.execute('UPDATE sessions SET status=?, assigned_admin=? WHERE id=?', (new_status, admin_id, qid))
-    conn.commit()
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute('UPDATE sessions SET status=?, assigned_admin=? WHERE id=?', (new_status, admin_id, qid))
+        conn.commit()
 
 def update_stats(admin_id, field):
-    cursor.execute('INSERT OR IGNORE INTO stats (admin_id) VALUES (?)', (admin_id,))
-    cursor.execute(f'UPDATE stats SET {field} = {field} + 1, last_activity = ? WHERE admin_id = ?',
-                   (datetime.now().strftime('%Y-%m-%d %H:%M:%S'), admin_id))
-    conn.commit()
-
-def delete_session(qid):
-    cursor.execute('DELETE FROM sessions WHERE id=?', (qid,))
-    conn.commit()
-
-def get_admin_keyboard(in_dialog=False):
-    kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    if in_dialog:
-        kb.row("Вопрос решён", "Отложить")
-    else:
-        kb.row("Вопросы", "Отложенные вопросы")
-    return kb
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute('INSERT OR IGNORE INTO stats (admin_id) VALUES (?)', (admin_id,))
+        cursor.execute(f'UPDATE stats SET {field} = {field} + 1, last_activity = ? WHERE admin_id = ?',
+                       (datetime.now().strftime('%Y-%m-%d %H:%M:%S'), admin_id))
+        conn.commit()
 
 def get_creator_keyboard():
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
     kb.row("Добавить админа", "Удалить админа")
-    kb.row("Список админов", "Статистика")
-    kb.row("Вопросы", "Отложенные вопросы", "Логи")
+    kb.row("Список админов", "Статистика", "Логи")
+    kb.row("Вопросы", "Отложенные вопросы")  # Добавим сюда кнопки, чтобы создатель мог управлять
     return kb
 
-user_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-user_keyboard.row("Связаться с поддержкой")
+def admin_handler(message):
+    if message.from_user.id not in ADMIN_IDS and message.from_user.id != CREATOR_ID:
+        bot.send_message(message.chat.id, "У вас нет прав для выполнения этой команды.")
+        return
 
-admin_sessions = {}  # {admin_id: session_id}
+    if message.text == "Вопросы":
+        sessions = get_sessions_by_status("pending")
+        if sessions:
+            for session in sessions:
+                session_id, user_id, question, _, assigned = session
+                if assigned is None:
+                    update_session_status(session_id, 'processing', message.from_user.id)
+                    bot.send_message(message.chat.id, f"Вопрос от пользователя {user_id} (ID {session_id}):\n{question}", reply_markup=types.ReplyKeyboardMarkup(resize_keyboard=True).row("Решено", "Отложить"))
+                    log_action(f"Админ {message.from_user.id} взял вопрос ID {session_id}")
+                    return
+            bot.send_message(message.chat.id, "Нет доступных вопросов.")
+        else:
+            bot.send_message(message.chat.id, "Вопросов нет.")
+    elif message.text == "Отложенные вопросы":
+        sessions = get_sessions_by_status("deferred")
+        for session in sessions:
+            session_id, user_id, question, _, assigned = session
+            if assigned == message.from_user.id:
+                update_session_status(session_id, 'processing', message.from_user.id)
+                bot.send_message(message.chat.id, f"Возврат к отложенному вопросу ID {session_id} от пользователя {user_id}:\n{question}", reply_markup=types.ReplyKeyboardMarkup(resize_keyboard=True).row("Решено", "Отложить"))
+                log_action(f"Админ {message.from_user.id} вернулся к отложенному вопросу ID {session_id}")
+                return
+        bot.send_message(message.chat.id, "Нет отложенных вопросов.")
+    elif message.text == "Решено":
+        bot.send_message(message.chat.id, "Вопрос помечен как решён.")
+        update_stats(message.from_user.id, 'resolved')
+    elif message.text == "Отложить":
+        bot.send_message(message.chat.id, "Вопрос отложен.")
+        update_stats(message.from_user.id, 'deferred')
 
 @bot.message_handler(commands=['start'])
 def start_handler(message):
     if message.from_user.id == CREATOR_ID:
-        bot.send_message(message.chat.id, "Добро пожаловать, создатель!", reply_markup=get_creator_keyboard())
+        bot.send_message(message.chat.id, "Привет, создатель", reply_markup=get_creator_keyboard())
     elif message.from_user.id in ADMIN_IDS:
-        bot.send_message(message.chat.id, "Добро пожаловать, администратор!", reply_markup=get_admin_keyboard())
+        bot.send_message(message.chat.id, "Привет, админ", reply_markup=types.ReplyKeyboardMarkup(resize_keyboard=True).row("Вопросы", "Отложенные вопросы"))
     else:
-        bot.send_message(
-            message.chat.id,
-            "Здравствуйте!\n\nЧтобы связаться со службой поддержки, нажмите кнопку «Связаться с поддержкой» и опишите вашу проблему.",
-            reply_markup=user_keyboard
-        )
+        bot.send_message(message.chat.id, "Вы пользователь. Напишите вашу проблему.")
 
 @bot.message_handler(func=lambda m: m.from_user.id == CREATOR_ID)
 def creator_handler(message):
     if message.text == "Добавить админа":
-        bot.send_message(message.chat.id, "Введите ID пользователя, которого хотите назначить админом:")
-        bot.register_next_step_handler(message, add_admin_step)
+        bot.send_message(message.chat.id, "Введите ID нового админа:")
+        bot.register_next_step_handler(message, lambda m: add_admin(m, message))
     elif message.text == "Удалить админа":
-        bot.send_message(message.chat.id, "Введите ID администратора, которого хотите удалить:")
-        bot.register_next_step_handler(message, remove_admin_step)
+        bot.send_message(message.chat.id, "Введите ID админа для удаления:")
+        bot.register_next_step_handler(message, lambda m: remove_admin(m, message))
     elif message.text == "Список админов":
-        admins_list = '\n'.join([str(a) for a in ADMIN_IDS])
-        bot.send_message(message.chat.id, f"Текущие администраторы:\n{admins_list}")
+        bot.send_message(message.chat.id, f"Список: {', '.join(map(str, ADMIN_IDS))}")
     elif message.text == "Статистика":
-        cursor.execute('SELECT admin_id, resolved, deferred, last_activity FROM stats ORDER BY resolved DESC')
-        rows = cursor.fetchall()
-        if rows:
-            stat_msg = "📊 Статистика по администраторам:\n"
-            for r in rows:
-                last = r[3] if r[3] else "Нет активности"
-                stat_msg += f"ID {r[0]} — Решено: {r[1]}, Отложено: {r[2]}, Последняя активность: {last}\n"
-            bot.send_message(message.chat.id, stat_msg)
-        else:
-            bot.send_message(message.chat.id, "Статистика пока пуста.")
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM stats")
+            stats = cursor.fetchall()
+            msg = '\n'.join([f"ID {s[0]}: Решено: {s[1]}, Отложено: {s[2]}, Последняя активность: {s[3]}" for s in stats])
+            bot.send_message(message.chat.id, msg or "Нет данных")
     elif message.text == "Логи":
         if os.path.exists(LOG_FILE):
             with open(LOG_FILE, 'r', encoding='utf-8') as f:
                 logs = f.read()
-                bot.send_message(message.chat.id, f"📄 Логи:\n{logs[-4000:]}")
+                bot.send_message(message.chat.id, logs[-4000:] or "Лог пуст")
         else:
-            bot.send_message(message.chat.id, "Лог-файл пока пуст.")
+            bot.send_message(message.chat.id, "Лог-файл не найден.")
     else:
         admin_handler(message)
 
-@bot.message_handler(func=lambda m: m.from_user.id in ADMIN_IDS)
-def admin_handler(message):
-    admin_id = message.from_user.id
-    if message.text == "Вопросы":
-        pending = get_sessions_by_status("pending")
-        available = [s for s in pending if s['assigned_admin'] is None]
-        if not available:
-            bot.send_message(admin_id, "Нет новых вопросов.")
-            return
-        session = random.choice(available)
-        admin_sessions[admin_id] = session['id']
-        update_session_status(session['id'], "in_progress", admin_id)
-        log_action(f"Админ {admin_id} взял вопрос {session['id']}")
-        bot.send_message(admin_id, f"📩 Вопрос от пользователя {session['user_id']}:\n{session['question']}", reply_markup=get_admin_keyboard(in_dialog=True))
-    elif message.text == "Отложенные вопросы":
-        deferred = get_sessions_by_status("deferred")
-        mine = [s for s in deferred if s['assigned_admin'] == admin_id]
-        if not mine:
-            bot.send_message(admin_id, "У вас нет отложенных вопросов.")
-            return
-        session = random.choice(mine)
-        admin_sessions[admin_id] = session['id']
-        update_session_status(session['id'], "in_progress", admin_id)
-        log_action(f"Админ {admin_id} вернулся к вопросу {session['id']}")
-        bot.send_message(admin_id, f"📩 Возврат к вопросу пользователя {session['user_id']}:\n{session['question']}", reply_markup=get_admin_keyboard(in_dialog=True))
-    elif message.text == "Вопрос решён":
-        qid = admin_sessions.get(admin_id)
-        if qid:
-            delete_session(qid)
-            update_stats(admin_id, 'resolved')
-            log_action(f"Админ {admin_id} решил вопрос {qid}")
-            admin_sessions.pop(admin_id, None)
-            bot.send_message(admin_id, "✅ Вопрос удалён как решённый", reply_markup=get_admin_keyboard())
-    elif message.text == "Отложить":
-        qid = admin_sessions.get(admin_id)
-        if qid:
-            update_session_status(qid, "deferred", admin_id)
-            update_stats(admin_id, 'deferred')
-            log_action(f"Админ {admin_id} отложил вопрос {qid}")
-            admin_sessions.pop(admin_id, None)
-            bot.send_message(admin_id, "⏸ Вопрос отложен", reply_markup=get_admin_keyboard())
-
-@bot.message_handler(func=lambda m: m.text == "Связаться с поддержкой")
-def user_handler(message):
-    bot.send_message(message.chat.id, "Опишите вашу проблему. Один из администраторов скоро свяжется с вами.")
-    bot.register_next_step_handler(message, handle_question)
-
-def handle_question(message):
-    qid = create_session(message.chat.id, message.text)
-    bot.send_message(message.chat.id, "Ваш вопрос принят. Ожидайте ответа от поддержки. ID запроса: " + str(qid))
-
-def add_admin_step(message):
+def add_admin(m, original):
     try:
-        new_id = int(message.text)
+        new_id = int(m.text)
         if new_id not in ADMIN_IDS:
             ADMIN_IDS.append(new_id)
             save_admin_ids(ADMIN_IDS)
-            bot.send_message(message.chat.id, f"Пользователь {new_id} добавлен в администраторы.")
-            log_action(f"Создатель добавил админа {new_id}")
+            bot.send_message(original.chat.id, f"Админ {new_id} добавлен")
         else:
-            bot.send_message(message.chat.id, "Этот пользователь уже является админом.")
-    except ValueError:
-        bot.send_message(message.chat.id, "Некорректный ID.")
+            bot.send_message(original.chat.id, "Админ уже есть")
+    except:
+        bot.send_message(original.chat.id, "Некорректный ID")
 
-def remove_admin_step(message):
+def remove_admin(m, original):
     try:
-        remove_id = int(message.text)
-        if remove_id in ADMIN_IDS and remove_id != CREATOR_ID:
-            ADMIN_IDS.remove(remove_id)
+        rm_id = int(m.text)
+        if rm_id in ADMIN_IDS:
+            ADMIN_IDS.remove(rm_id)
             save_admin_ids(ADMIN_IDS)
-            bot.send_message(message.chat.id, f"Администратор {remove_id} удалён.")
-            log_action(f"Создатель удалил админа {remove_id}")
+            bot.send_message(original.chat.id, f"Админ {rm_id} удалён")
         else:
-            bot.send_message(message.chat.id, "Нельзя удалить этого администратора.")
-    except ValueError:
-        bot.send_message(message.chat.id, "Некорректный ID.")
+            bot.send_message(original.chat.id, "Нет такого админа")
+    except:
+        bot.send_message(original.chat.id, "Некорректный ID")
 
 bot.polling(none_stop=True)
