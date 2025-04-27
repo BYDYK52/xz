@@ -1,0 +1,57 @@
+
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Robotobold';
+    src: url('../fonts/Robotobold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+.about{
+    background-color: rgb(52, 56, 61);
+    margin-left: 17px;
+}
+
+.about h1{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+}
+
+.about strong{
+    font-family: 'Robotobold', sans-serif;';
+    font-weight: 600;
+}
+
+.about p{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+.about_h1{
+    text-align:justify;
+    padding: 10px 105px;
+    font-size: 27px;
+    color: #fff
+}
+
+.about{
+    color: #fff;
+}
+.about h2{
+    margin: 0px 0px
+}
+
+.about b{
+    font-size: 20px
+}
