@@ -19,18 +19,19 @@
 .tg_bots{
     display: flex;
     display: inline-block;
+    color: white;
 }
 
 
 .tg_bots_2{
     display: flex;
     display: inline-block;
+    color: white;
 }
 
 
-
 .tg_bots_block{
-    background: #fff;
+    background-color: rgb(52, 56, 61);
 
 }
 

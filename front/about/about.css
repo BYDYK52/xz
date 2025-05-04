@@ -23,6 +23,10 @@
     margin-left: 17px;
 }
 
+.tg_bots_title{
+    color: white;
+}
+
 .about h1{
     font-family: 'Roboto', sans-serif;
     font-weight: 100;
@@ -63,7 +67,7 @@
     margin: 0px 0px
     margin-bottom: 25px
     margin-top: 25px
-}
+}   676
 
 .about b{
     font-size: 20px
