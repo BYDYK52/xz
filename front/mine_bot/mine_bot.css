@@ -1,0 +1,53 @@
+
+#mine_bot_form{
+    display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: #00ff00;
+	width: 100%;
+}
+
+/* === Sign in Form === */
+#mine_bot_form {
+ height: 90px;
+ width: 300px;
+ border-radius: 8px;
+ position: relative;
+}
+#mine_bot_form::before {
+ display: block;
+ position: relative;
+ height: 2px;
+ background: rgb(52, 56, 61);
+ content: '';
+ top: 44px;
+ margin-left: 20px;
+ z-index: 1;
+}
+#mine_bot_form input:first-of-type{
+ border-top-right-radius: 8px;
+ border-top-left-radius: 8px;
+}
+#mine_bot_form input:last-of-type{
+ border-bottom-right-radius: 8px;
+ border-bottom-left-radius: 8px;
+}
+#mine_bot_form  input[type="email"], #signin  input[type="password"]{
+ background: rgb(28, 30, 33);
+ box-shadow: inset -100px -100px 0 rgb(28, 30, 33); /*Prevent yellow autofill color*/
+ color: rgb(52, 56, 61);
+}
+#mine_bot_form  input[type="email"], #signin  input[type="password"]{
+ position: relative;
+ display: block;
+ width: 280px;
+ height: 45px;
+ border: 0;
+ outline: 0;
+ top: -2px;
+ padding: 0 0 0 20px;
+ font-weight: 700;
+}
+#mine_bot_form  input[type="email"]:focus, #signin  input[type="password"]:focus{
+ color: rgb(255, 255, 255);
+}

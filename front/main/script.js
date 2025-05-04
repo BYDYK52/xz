@@ -31,3 +31,18 @@ document.getElementById("tg_bot_button_catalog").onclick = function() {
     catalogTitle.style.display = 'none';
   }
 };
+
+
+let order = false;
+
+document.getElementById("tg_bot_button_order").onclick = function() {
+  order = !order;
+  console.log("Значение переменной order изменено на:", order);
+
+  const catalogTitle = document.querySelector('.mine_bot');
+  if (order) {
+    catalogTitle.style.display = 'block';
+  } else {
+    catalogTitle.style.display = 'none';
+  }
+};
