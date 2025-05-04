@@ -47,10 +47,3 @@ document.getElementById("tg_bot_button_order").onclick = function() {
     catalogTitle.style.display = 'none';
   }
 };
-  const catalogTitle = document.querySelector('.mine_bot_2');
-  if (order) {
-    catalogTitle.style.display = 'block';
-  } else {
-    catalogTitle.style.display = 'none';
-  }
-};
