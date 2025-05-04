@@ -33,6 +33,7 @@ document.getElementById("tg_bot_button_catalog").onclick = function() {
 };
 
 
+
 let order = false;
 
 document.getElementById("tg_bot_button_order").onclick = function() {
