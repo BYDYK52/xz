@@ -88,82 +88,124 @@
         </div>
     </div>
 
-    <div class="catalog_block">
-        <div class="catalog_title"><h1>▎Вот готовые варианты  <strong> ботов </strong></h1></div>
-    </div>
-    <div class="mine_bot_block"  id="mine_bot_block">
-        <form id="mine_bot_form" method="" action="" autocomplete="off">
-        <div class="mine_bot">
-            <input type="email" id="order_email" name="order_email" placeholder="почта для связи с вами">
-            <h2>1. Цели и задачи</h2>
-            <p>
-              Какова основная цель бота? (информирование, поддержка, продажи и т.п.)<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-            <p>
-              Какие основные задачи должен решать бот?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
+<!-- Кнопки для открытия модальных окон -->
 
-            <h2>2. Функционал</h2>
-            <p>
-              Какие ключевые функции нужны? (уведомления, сбор данных, опросы, интеграции)<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-            <p>
-              Требуется ли регистрация или авторизация пользователей?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-            <p>
-              Нужно ли поддерживать кнопки и меню?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
 
-            <h2>3. Взаимодействие с пользователем</h2>
-            <p>
-              Какие сценарии общения важны? (приветствие, FAQ, инструкции)<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-            <p>
-              Нужно ли обрабатывать свободные сообщения или только команды?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-            <h2>4. Технические и административные моменты</h2>
-            <p>
-              Есть ли предпочтения по технологиям или платформам?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-            <p>
-              Нужно ли хранить данные пользователей? Какие и где?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-            <p>
-              Кто будет администрировать бота? Нужен ли интерфейс управления?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
+<!-- Каталог карточек -->
+<div class="catalog_block">
+  <div class="catalog_title">
+    <div id="myModal_2" class="modal">
+      <div class="modal-content">
+        <button class="close-btn" id="closeModalBtn_2" aria-label="Закрыть">&times;</button>
+        <form id="mine_bot_form_2" autocomplete="off">
+          <h2>Готовые боты (ниже есть ссылки на них, перейдя вы можете ознакомиться с функционалом)</h2>
+          <div class="mine_bot">
+            <div class="tg_bot_card">
+              <h3 class="bot_name">Telegram Бот "Помощник"</h3>
+              <p class="bot_description">Автоматизируйте поддержку клиентов и увеличьте продажи с нашим готовым ботом.</p>
+              <div class="bot_footer">
+                <span class="bot_price">$5</span>
+                <button type="button" class="bot_order_btn" data-bot="Помощник">Заказать</button>
+              </div>
+            </div>
+            <div class="tg_bot_card">
+              <h3 class="bot_name">Telegram Бот "Консультант"</h3>
+              <p class="bot_description">Персональный помощник для вашего бизнеса с расширенным функционалом.</p>
+              <div class="bot_footer">
+                <span class="bot_price">$15</span>
+                <button type="button" class="bot_order_btn" data-bot="Консультант">Заказать</button>
+              </div>
+            </div>
 
-            <h2>5. Визуальный стиль и особенности</h2>
-            <p>
-              Есть ли требования к стилю сообщений?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-            <p>
-              Нужно ли многоязычие?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-
-            <h2>6. Сроки и бюджет</h2>
-            <p>
-              Какие сроки реализации?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-            <p>
-              Какой бюджет проекта?<br>
-              <input type="text" size="60" placeholder="Ваш ответ здесь">
-            </p>
-        </div>
+            <!-- Добавьте другие карточки по необходимости -->
+          </div>
         </form>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- Модальное окно с формой заказа -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" id="closeModalBtn" aria-label="Закрыть">&times;</button>
+    <div class="mine_bot_block" id="mine_bot_block">
+      <form id="mine_bot_form" autocomplete="off">
+        <input type="hidden" id="bot_name_field" name="bot_name">
+        <div class="mine_bot">
+          <input type="email" id="order_email" name="order_email" placeholder="почта для связи с вами" required>
+          <h2>1. Цели и задачи</h2>
+        <p>
+          Какова основная цель бота? (информирование, поддержка, продажи и т.п.)<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+        <p>
+          Какие основные задачи должен решать бот?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+
+        <h2>2. Функционал</h2>
+        <p>
+          Какие ключевые функции нужны? (уведомления, сбор данных, опросы, интеграции)<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+        <p>
+          Требуется ли регистрация или авторизация пользователей?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+        <p>
+          Нужно ли поддерживать кнопки и меню?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+
+        <h2>3. Взаимодействие с пользователем</h2>
+        <p>
+          Какие сценарии общения важны? (приветствие, FAQ, инструкции)<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+        <p>
+          Нужно ли обрабатывать свободные сообщения или только команды?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+        <h2>4. Технические и административные моменты</h2>
+        <p>
+          Есть ли предпочтения по технологиям или платформам?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+        <p>
+          Нужно ли хранить данные пользователей? Какие и где?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+        <p>
+          Кто будет администрировать бота? Нужен ли интерфейс управления?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+
+        <h2>5. Визуальный стиль и особенности</h2>
+        <p>
+          Есть ли требования к стилю сообщений?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+        <p>
+          Нужно ли многоязычие?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+
+        <h2>6. Сроки и бюджет</h2>
+        <p>
+          Какие сроки реализации?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+        <p>
+          Какой бюджет проекта?<br>
+          <input type="text" size="60" placeholder="Ваш ответ здесь" required>
+        </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 </main>
 <footer>
 
