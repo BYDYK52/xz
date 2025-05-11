@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Карусель отзывов</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+  body {
+    margin: 0;
+    background: rgb(52, 56, 61);
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .carousel {
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+    background: linear-gradient(135deg, #3a3f45, #2e3238);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    padding: 40px 30px 60px;
+    overflow: hidden;
+  }
+  input[type="radio"] {
+    display: none;
+  }
+  .slides {
+    position: relative;
+    height: 220px;
+  }
+  .slide {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0;
+    padding: 0 30px;
+    transition: opacity 0.7s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  #slide1:checked ~ .slides #s1,
+  #slide2:checked ~ .slides #s2,
+  #slide3:checked ~ .slides #s3 {
+    opacity: 1;
+    position: relative;
+  }
+  .quote-icon {
+    font-size: 50px;
+    color: #fff;
+    margin-bottom: 15px;
+    opacity: 0.7;
+  }
+  .review-text {
+    font-size: 1.25em;
+    line-height: 1.6;
+    font-weight: 400;
+    color: #eee;
+    margin-bottom: 25px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
+  .review-author {
+    font-weight: 700;
+    font-size: 1.1em;
+    text-align: right;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  }
+  .nav {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  /* Кнопки-стрелки */
+  .nav-arrow {
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 3px 8px rgba(255,255,255,0.12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease;
+    user-select: none;
+  }
+  .nav-arrow:hover {
+    background: #bbb;
+  }
+  .nav-arrow svg {
+    fill: #333;
+    width: 18px;
+    height: 18px;
+  }
+  /* Точки навигации */
+  .nav-dots {
+    display: flex;
+    gap: 12px;
+  }
+  .nav-dots label {
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+    background: #bbb;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+    box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  }
+  #slide1:checked ~ .nav .nav-dots label[for="slide1"],
+  #slide2:checked ~ .nav .nav-dots label[for="slide2"],
+  #slide3:checked ~ .nav .nav-dots label[for="slide3"] {
+    background: #fff;
+    box-shadow: 0 0 10px #fff;
+  }
+  /* Показываем только нужные стрелки для каждого слайда */
+  .nav label[for^="slide"] { display: none; }
+  #slide1:checked ~ .nav .prev3, /* для 1-го слайда: prev - 3, next - 2 */
+  #slide1:checked ~ .nav .next2,
+  #slide2:checked ~ .nav .prev1, /* для 2-го: prev - 1, next - 3 */
+  #slide2:checked ~ .nav .next3,
+  #slide3:checked ~ .nav .prev2, /* для 3-го: prev - 2, next - 1 */
+  #slide3:checked ~ .nav .next1 {
+    display: flex;
+  }
+  @media (max-width: 480px) {
+    .nav-arrow {
+      display: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="carousel">
+  <!-- Радиокнопки для переключения -->
+  <input type="radio" name="slider" id="slide1" checked />
+  <input type="radio" name="slider" id="slide2" />
+  <input type="radio" name="slider" id="slide3" />
+
+  <div class="slides">
+    <div class="slide" id="s1">
+      <div class="quote-icon">“</div>
+      <p class="review-text">Отличный сервис! Очень доволен качеством и скоростью работы.</p>
+      <p class="review-author">- Иван Петров</p>
+    </div>
+    <div class="slide" id="s2">
+      <div class="quote-icon">“</div>
+      <p class="review-text">Профессиональная команда и индивидуальный подход к каждому клиенту.</p>
+      <p class="review-author">- Мария Смирнова</p>
+    </div>
+    <div class="slide"id="s3">
+      <div class="quote-icon">“</div>
+      <p class="review-text">Рекомендую всем! Всё сделано быстро и качественно, спасибо!</p>
+      <p class="review-author">- Алексей Кузнецов</p>
+    </div>
+  </div>
+
+  <div class="nav">
+    <!-- Стрелки: для каждого слайда своя пара -->
+    <!-- Для первого слайда -->
+    <label for="slide3" class="nav-arrow prev3" aria-label="Предыдущий отзыв">
+      <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </label>
+    <label for="slide2" class="nav-arrow next2" aria-label="Следующий отзыв">
+      <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+    </label>
+    <!-- Для второго слайда -->
+    <label for="slide1" class="nav-arrow prev1" aria-label="Предыдущий отзыв">
+      <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </label>
+    <label for="slide3" class="nav-arrow next3" aria-label="Следующий отзыв">
+      <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+    </label>
+    <!-- Для третьего слайда -->
+    <label for="slide2" class="nav-arrow prev2" aria-label="Предыдущий отзыв">
+      <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </label>
+    <label for="slide1" class="nav-arrow next1" aria-label="Следующий отзыв">
+      <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+    </label>
+    <!-- Точки -->
+    <div class="nav-dots">
+      <label for="slide1" aria-label="Отзыв 1"></label>
+      <label for="slide2" aria-label="Отзыв 2"></label>
+      <label for="slide3" aria-label="Отзыв 3"></label>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
