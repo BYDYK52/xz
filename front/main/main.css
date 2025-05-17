@@ -23,6 +23,121 @@ body{
 }
 
 
+ container{
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #34383d;
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 0; /* Убраны боковые отступы */
+      box-sizing: border-box;
+    }
+    .container {
+      display: flex;
+      width: 100%; /* Растягиваем на всю ширину */
+      max-width: none; /* Убираем ограничение по ширине */
+      background: linear-gradient(135deg, #3a3f45, #2e3238);
+      border-radius: 0; /* Можно убрать скругление, если хотите */
+      box-shadow: none; /* Можно убрать тень, если хотите */
+      padding: 60px 80px; /* Внутренние отступы, чтобы контент не прилипал к краям */
+      gap: 60px;
+      align-items: center;
+      color: #fff;
+      box-sizing: border-box;
+    }
+    .text-block {
+      flex: 1;
+      min-width: 0;
+    }
+    .text-block h1 {
+      font-size: 3rem;
+      margin-bottom: 25px;
+      line-height: 1.2;
+    }
+    .text-block h1 strong {
+      color: #4dabf7;
+    }
+    .text-block h2 {
+      font-size: 1.6rem;
+      margin-top: 40px;
+      margin-bottom: 15px;
+      color: #a0c4ff;
+    }
+    .text-block p {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      color: #ccc;
+      margin: 0;
+    }
+    .image-block {
+      flex: 1;
+      max-width: 400px;
+      min-width: 280px;
+    }
+    .image-block img {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+      display: block;
+      object-fit: contain;
+    }
+
+    /* Адаптив для экранов меньше 1200px */
+    @media (max-width: 1199px) {
+      body {
+        padding: 30px 0;
+      }
+      .container {
+        padding: 40px 40px;
+        gap: 40px;
+      }
+      .text-block h1 {
+        font-size: 2.5rem;
+      }
+      .text-block h2 {
+        font-size: 1.3rem;
+        margin-top: 30px;
+        margin-bottom: 10px;
+      }
+      .text-block p {
+        font-size: 1.1rem;
+      }
+      .image-block {
+        max-width: 300px;
+        min-width: 200px;
+      }
+    }
+
+    /* Мобильная адаптация */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 0;
+      }
+      .container {
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 30px;
+      }
+      .image-block {
+        max-width: 200px;
+        margin-bottom: 30px;
+        min-width: auto;
+      }
+      .text-block h1 {
+        font-size: 2rem;
+      }
+      .text-block h2 {
+        font-size: 1.1rem;
+        margin-top: 20px;
+        margin-bottom: 8px;
+      }
+      .text-block p {
+        font-size: 1rem;
+      }
+    }
 /**
   Нормализация блочной модели
  */
@@ -231,3 +346,9 @@ svg * {
     scroll-behavior: auto !important;
   }
 }
+
+
+
+
+
+

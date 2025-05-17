@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../about/about.css">
     <link rel="stylesheet" href="../catalog/catalog.css">
     <link rel="stylesheet" href="../mine_bot/mine_bot.css">
+    <link rel="stylesheet" href="../feedback/feedback.css">
     <title>Document</title>
 </head>
 <body>
@@ -32,30 +33,23 @@
     </div>
 </header>
 <main>
-    <div class="about">
-        <div class="about_h1"><h1>О нас, наш тг бот и <br> <strong>почему именно мы лучше других</strong></h1></div>
-        <h2>▎О нас</h2>
-        <p>Добро пожаловать в мир инновационных решений и передовых технологий!<br> Мы — команда профессионалов,
-            специализирующаяся на разработке Telegram-ботов, которые помогут вашему бизнесу расти и развиваться.<br>
-            Наша цель — предоставить вам инструменты, которые упростят взаимодействие с клиентами и сделают ваш бизнес
-            более эффективным.</p>
-        <h2>▎Наш Telegram-бот</h2>
-        <p>Наш Telegram-бот — это не просто программа, а ваш надежный помощник, который работает 24/7. <br> Он способен
-            автоматизировать множество процессов: от обработки заказов до предоставления поддержки клиентам. <br> Мы
-            разрабатываем ботов с учетом специфики вашего бизнеса, чтобы они максимально соответствовали вашим
-            потребностям и ожиданиям.</p>
-        <h2>▎Почему именно мы лучше других</h2>
-            <p>Индивидуальный подход: Мы понимаем, что каждый бизнес уникален. Поэтому мы разрабатываем решения,
-                которые идеально подходят именно вам.<br>
-                Качество и надежность: Наша команда состоит из опытных разработчиков, которые используют только
-                современные технологии и лучшие практики в разработке.<br>
-                Доступные цены: Мы предлагаем конкурентоспособные расценки без ущерба для качества, что делает наши
-                услуги доступными для бизнеса любого размера.</p>
-
+    <div class="container">
+    <div class="text-block">
+      <h1>О нас, наш тг бот и <br /><strong>почему мы лучше других</strong></h1>
+      <h2>▎О нас</h2>
+      <p>Мы - команда профессионалов, создающая Telegram-ботов, которые помогают бизнесу расти и развиваться.</p>
+      <h2>▎Наш Telegram-бот</h2>
+      <p>Надёжный помощник, работающий 24/7, автоматизирующий заказы и поддержку клиентов.</p>
+      <h2>▎Почему выбирают нас</h2>
+      <p>Индивидуальный подход, высокое качество и доступные цены - всё для вашего успеха.</p>
     </div>
+    <div class="image-block">
+      <img src="https://i.imgur.com/7rQdY8p.png" alt="Телефон с Telegram-ботом" />
+    </div>
+  </div>
 <div class="tg_bots_block">
   <div class="tg_bots_title">
-    <h1>▎Наши варианты <strong> ботов </strong></h1>
+    <h1>Наши варианты <strong>ботов</strong></h1>
   </div>
     <div class="tg_bots">
         <h1 class="tg_bots_name">Наши готовые тг боты</h1>
@@ -201,6 +195,62 @@
   </div>
 </div>
 
+<div class="reviews-section">
+  <h2 class="reviews-title">Наши отзывы</h2>
+  <div class="carousel-center">
+    <div class="carousel">
+      <!-- Радиокнопки для переключения -->
+      <input type="radio" name="slider" id="slide1" checked />
+      <input type="radio" name="slider" id="slide2" />
+      <input type="radio" name="slider" id="slide3" />
+
+      <div class="slides">
+        <div class="slide" id="s1">
+          <div class="quote-icon">“</div>
+          <p class="review-text">Отличный сервис! Очень доволен качеством и скоростью работы.</p>
+          <p class="review-author">- Иван Петров</p>
+        </div>
+        <div class="slide" id="s2">
+          <div class="quote-icon">“</div>
+          <p class="review-text">Профессиональная команда и индивидуальный подход к каждому клиенту.</p>
+          <p class="review-author">- Мария Смирнова</p>
+        </div>
+        <div class="slide" id="s3">
+          <div class="quote-icon">“</div>
+          <p class="review-text">Рекомендую всем! Всё сделано быстро и качественно, спасибо!</p>
+          <p class="review-author">- Алексей Кузнецов</p>
+        </div>
+      </div>
+
+      <div class="nav">
+        <label for="slide3" class="nav-arrow prev3" aria-label="Предыдущий отзыв">
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </label>
+        <label for="slide2" class="nav-arrow next2" aria-label="Следующий отзыв">
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </label>
+        <label for="slide1" class="nav-arrow prev1" aria-label="Предыдущий отзыв">
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </label>
+        <label for="slide3" class="nav-arrow next3" aria-label="Следующий отзыв">
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </label>
+        <label for="slide2" class="nav-arrow prev2" aria-label="Предыдущий отзыв">
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </label>
+        <label for="slide1" class="nav-arrow next1" aria-label="Следующий отзыв">
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </label>
+        <div class="nav-dots">
+          <label for="slide1" aria-label="Отзыв 1"></label>
+          <label for="slide2" aria-label="Отзыв 2"></label>
+          <label for="slide3" aria-label="Отзыв 3"></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </main>
 <footer class="footer">
       <div class="footer-container">
@@ -222,6 +272,9 @@
           <p class="footer-note">Нажмите, чтобы начать чат с ботом и получить помощь 24/7.</p>
         </div>
       </div>
+
+
+
 </footer>
 <script src="../main/script.js"></script>
 </body>

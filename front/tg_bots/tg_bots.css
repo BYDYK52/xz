@@ -1,40 +1,51 @@
-/* Основной фон блока */
+/* Основной блок с вариантами ботов */
 .tg_bots_block {
   background-color: rgb(52, 56, 61);
   max-width: 1100px;
-  margin: 40px auto;
+  margin: 80px auto; /* Увеличены отступы сверху и снизу */
   padding: 40px 20px;
   border-radius: 12px;
   font-family: 'Roboto', sans-serif;
-  color: #ffffff; /* белый текст */
+  color: #ffffff;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap; /* Позволяет колонкам переноситься на узких экранах */
+}
+/* Заголовок блока */
+.tg_bots_title {
+  width: 100%;
+  margin-bottom: 40px;
+  text-align: center;
+  user-select: none;
 }
 
-/* Заголовок блока */
 .tg_bots_title h1 {
   font-size: 36px;
   font-weight: 700;
-  margin-bottom: 60px;
   color: #4dabf7;
-  text-align: center;
+  margin: 0;
 }
 
 .tg_bots_title strong {
   color: #a0c4ff;
 }
 
-/* Контейнеры для двух вариантов ботов */
+/* Колонки с ботами */
 .tg_bots, .tg_bots_2 {
   background-color: #2c2f36;
   border-radius: 12px;
   padding: 30px 25px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
-  margin-bottom: 30px;
   max-width: 520px;
-  color: #ffffff; /* белый текст */
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  margin-bottom: 30px;
 }
 
 .tg_bots:hover, .tg_bots_2:hover {
@@ -49,6 +60,7 @@
   margin-bottom: 20px;
   color: #4dabf7;
   text-shadow: 0 0 6px #4dabf7;
+  text-transform: capitalize;
 }
 
 /* Цена */
@@ -101,6 +113,7 @@
   text-align: center;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 12px rgba(77, 171, 247, 0.5);
+  user-select: none;
 }
 
 #tg_bot_button_catalog:hover,
@@ -109,22 +122,11 @@
   box-shadow: 0 6px 18px rgba(51, 144, 255, 0.7);
 }
 
-/* Для десктопа - два блока в ряд */
-@media (min-width: 900px) {
-  .tg_bots_block {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-  }
-  .tg_bots, .tg_bots_2 {
-    margin-bottom: 0;
-  }
-}
-
-/* Мобильная адаптация */
+/* Адаптив для мобильных устройств */
 @media (max-width: 899px) {
   .tg_bots_block {
     display: block;
+    padding: 0 10px;
   }
   .tg_bots, .tg_bots_2 {
     max-width: 100%;
