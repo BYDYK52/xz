@@ -15,7 +15,6 @@ from rest_framework import filters
 class ProductAPIList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend,filters.SearchFilter]
     search_fields = ['title', 'content', ]
     filterset_class = ProductFilter
