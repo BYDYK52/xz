@@ -22,10 +22,10 @@
         <h1>XZBOT</h1>
     </div>
     <div class="btn">
-        <button> информация </button>
-        <button> тг боты </button>
-        <button> каталог </button>
-        <button> отзывы </button>
+        <button class="scroll-btn" data-target="top"> информация </button>
+        <button class="scroll-btn" data-target="target3"> тг боты </button>
+        <button class="scroll-btn" data-target="target3"> каталог </button>
+        <button class="scroll-btn" data-target="target4"> отзывы </button>
     </div>
     <div class="btn log">
         <a class="button button-log" href="../auth/auth.html">войти</a>
@@ -47,73 +47,74 @@
       <img src="https://i.imgur.com/7rQdY8p.png" alt="Телефон с Telegram-ботом" />
     </div>
   </div>
-<div class="tg_bots_block">
-  <div class="tg_bots_title">
-    <h1>Наши варианты <strong>ботов</strong></h1>
-  </div>
-    <div class="tg_bots">
-        <h1 class="tg_bots_name">Наши готовые тг боты</h1>
-        <h1 class="tg_bots_price">$5</h1>
-        <ul class="tg_bots_characteristics">
-          <li>бот будет готов почти сразу после оплаты</li>
-          <li>качество 99%</li>
-          <li>48ч и бот будет доступен в тг</li>
-          <li>1 неделя гарантии</li>
-          <li>-</li>
-        </ul>
-        <button id="tg_bot_button_catalog">каталог</button>
-      </div>
-
-      <div class="tg_bots_2">
-        <h1 class="tg_bots_name">тг бот сделанный по вашим пожеланиям</h1>
-        <h1 class="tg_bots_price">$?</h1>
-        <ul class="tg_bots_characteristics">
-          <li>такой будет только у вас</li>
-          <li>качество 99%</li>
-          <li>от 48ч до 2 недель бот будет в разработке</li>
-          <li>помощь поддержке(если она потребуется)</li>
-          <li>от 1ой до 2х недель гарантии</li>
-        </ul>
-        <button id="tg_bot_button_order">заказать</button>
-      </div>
-</div>
-<!-- Кнопки для открытия модальных окон -->
 
 
-<!-- Каталог карточек -->
-<div class="catalog_block">
-  <div class="catalog_title">
-    <div id="myModal_2" class="modal">
-      <div class="modal-content">
-        <button class="close-btn" id="closeModalBtn_2" aria-label="Закрыть">&times;</button>
-        <form id="mine_bot_form_2" autocomplete="off">
-          <h2>Готовые боты (ниже есть ссылки на них, перейдя вы можете ознакомиться с функционалом)</h2>
-          <div class="mine_bot">
-            <div class="tg_bot_card" id="products">
-              <h3 class="bot_name">Telegram Бот "Помощник"</h3>
-              <p class="bot_description">Автоматизируйте поддержку клиентов и увеличьте продажи с нашим готовым ботом.</p>
-              <div class="bot_footer">
-                <span class="bot_price">$5</span>
-                <button type="button" class="bot_order_btn" data-bot="Помощник">Заказать</button>
+  <div class="tg_bots_block">
+    <div class="tg_bots_title">
+      <div id="target3" class="target"><h1>Наши варианты <strong>ботов</strong></h1></div>
+    </div>
+      <div class="tg_bots">
+          <h1 class="tg_bots_name">Наши готовые тг боты</h1>
+          <h1 class="tg_bots_price">$5</h1>
+          <ul class="tg_bots_characteristics">
+            <li>бот будет готов почти сразу после оплаты</li>
+            <li>качество 99%</li>
+            <li>48ч и бот будет доступен в тг</li>
+            <li>1 неделя гарантии</li>
+            <li>-</li>
+          </ul>
+          <button id="tg_bot_button_catalog">каталог</button>
+        </div>
+
+        <div class="tg_bots_2">
+          <h1 class="tg_bots_name">тг бот сделанный по вашим пожеланиям</h1>
+          <h1 class="tg_bots_price">$?</h1>
+          <ul class="tg_bots_characteristics">
+            <li>такой будет только у вас</li>
+            <li>качество 99%</li>
+            <li>от 48ч до 2 недель бот будет в разработке</li>
+            <li>помощь поддержке(если она потребуется)</li>
+            <li>от 1ой до 2х недель гарантии</li>
+          </ul>
+          <button id="tg_bot_button_order">заказать</button>
+        </div>
+  <!-- Кнопки для открытия модальных окон -->
+
+
+  <!-- Каталог карточек -->
+  <div class="catalog_block">
+    <div class="catalog_title">
+      <div id="myModal_2" class="modal">
+        <div class="modal-content">
+          <button class="close-btn" id="closeModalBtn_2" aria-label="Закрыть">&times;</button>
+          <form id="mine_bot_form_2" autocomplete="off">
+            <h2>Готовые боты (ниже есть ссылки на них, перейдя вы можете ознакомиться с функционалом)</h2>
+            <div class="mine_bot">
+              <div class="tg_bot_card" id="products">
+                <h3 class="bot_name">Telegram Бот "Помощник"</h3>
+                <p class="bot_description">Автоматизируйте поддержку клиентов и увеличьте продажи с нашим готовым ботом.</p>
+                <div class="bot_footer">
+                  <span class="bot_price">$5</span>
+                  <button type="button" class="bot_order_btn" data-bot="Помощник">Заказать</button>
+                </div>
               </div>
-            </div>
-            <div class="tg_bot_card">
-              <h3 class="bot_name">Telegram Бот "Консультант"</h3>
-              <p class="bot_description">Персональный помощник для вашего бизнеса с расширенным функционалом.</p>
-              <div class="bot_footer">
-                <span class="bot_price">$15</span>
-                <button type="button" class="bot_order_btn" data-bot="Консультант">Заказать</button>
+              <div class="tg_bot_card">
+                <h3 class="bot_name">Telegram Бот "Консультант"</h3>
+                <p class="bot_description">Персональный помощник для вашего бизнеса с расширенным функционалом.</p>
+                <div class="bot_footer">
+                  <span class="bot_price">$15</span>
+                  <button type="button" class="bot_order_btn" data-bot="Консультант">Заказать</button>
+                </div>
               </div>
-            </div>
 
-            <!-- Добавьте другие карточки по необходимости -->
-          </div>
-        </form>
+              <!-- Добавьте другие карточки по необходимости -->
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Модальное окно с формой заказа -->
 <div id="myModal" class="modal">
   <div class="modal-content">
@@ -194,63 +195,63 @@
     </div>
   </div>
 </div>
+<div id="target4" class="target">
+  <div class="reviews-section" >
+    <h2 class="reviews-title">Наши отзывы</h2>
+    <div class="carousel-center">
+      <div class="carousel">
+        <!-- Радиокнопки для переключения -->
+        <input type="radio" name="slider" id="slide1" checked />
+        <input type="radio" name="slider" id="slide2" />
+        <input type="radio" name="slider" id="slide3" />
 
-<div class="reviews-section">
-  <h2 class="reviews-title">Наши отзывы</h2>
-  <div class="carousel-center">
-    <div class="carousel">
-      <!-- Радиокнопки для переключения -->
-      <input type="radio" name="slider" id="slide1" checked />
-      <input type="radio" name="slider" id="slide2" />
-      <input type="radio" name="slider" id="slide3" />
+        <div class="slides">
+          <div class="slide" id="s1">
+            <div class="quote-icon">“</div>
+            <p class="review-text">Отличный сервис! Очень доволен качеством и скоростью работы.</p>
+            <p class="review-author">- Иван Петров</p>
+          </div>
+          <div class="slide" id="s2">
+            <div class="quote-icon">“</div>
+            <p class="review-text">Профессиональная команда и индивидуальный подход к каждому клиенту.</p>
+            <p class="review-author">- Мария Смирнова</p>
+          </div>
+          <div class="slide" id="s3">
+            <div class="quote-icon">“</div>
+            <p class="review-text">Рекомендую всем! Всё сделано быстро и качественно, спасибо!</p>
+            <p class="review-author">- Алексей Кузнецов</p>
+          </div>
+        </div>
 
-      <div class="slides">
-        <div class="slide" id="s1">
-          <div class="quote-icon">“</div>
-          <p class="review-text">Отличный сервис! Очень доволен качеством и скоростью работы.</p>
-          <p class="review-author">- Иван Петров</p>
-        </div>
-        <div class="slide" id="s2">
-          <div class="quote-icon">“</div>
-          <p class="review-text">Профессиональная команда и индивидуальный подход к каждому клиенту.</p>
-          <p class="review-author">- Мария Смирнова</p>
-        </div>
-        <div class="slide" id="s3">
-          <div class="quote-icon">“</div>
-          <p class="review-text">Рекомендую всем! Всё сделано быстро и качественно, спасибо!</p>
-          <p class="review-author">- Алексей Кузнецов</p>
-        </div>
-      </div>
-
-      <div class="nav">
-        <label for="slide3" class="nav-arrow prev3" aria-label="Предыдущий отзыв">
-          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        </label>
-        <label for="slide2" class="nav-arrow next2" aria-label="Следующий отзыв">
-          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </label>
-        <label for="slide1" class="nav-arrow prev1" aria-label="Предыдущий отзыв">
-          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        </label>
-        <label for="slide3" class="nav-arrow next3" aria-label="Следующий отзыв">
-          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </label>
-        <label for="slide2" class="nav-arrow prev2" aria-label="Предыдущий отзыв">
-          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        </label>
-        <label for="slide1" class="nav-arrow next1" aria-label="Следующий отзыв">
-          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </label>
-        <div class="nav-dots">
-          <label for="slide1" aria-label="Отзыв 1"></label>
-          <label for="slide2" aria-label="Отзыв 2"></label>
-          <label for="slide3" aria-label="Отзыв 3"></label>
+        <div class="nav">
+          <label for="slide3" class="nav-arrow prev3" aria-label="Предыдущий отзыв">
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </label>
+          <label for="slide2" class="nav-arrow next2" aria-label="Следующий отзыв">
+            <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+          </label>
+          <label for="slide1" class="nav-arrow prev1" aria-label="Предыдущий отзыв">
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </label>
+          <label for="slide3" class="nav-arrow next3" aria-label="Следующий отзыв">
+            <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+          </label>
+          <label for="slide2" class="nav-arrow prev2" aria-label="Предыдущий отзыв">
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </label>
+          <label for="slide1" class="nav-arrow next1" aria-label="Следующий отзыв">
+            <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+          </label>
+          <div class="nav-dots">
+            <label for="slide1" aria-label="Отзыв 1"></label>
+            <label for="slide2" aria-label="Отзыв 2"></label>
+            <label for="slide3" aria-label="Отзыв 3"></label>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 </main>
 <footer class="footer">
       <div class="footer-container">
@@ -278,6 +279,7 @@
 </footer>
 <script src="../main/script.js"></script>
 <script src="../catalog/commit_bots_on_site.js"></script>
+<script src="../header/header.js"></script>
 </body>
 </html>
 
